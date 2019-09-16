@@ -1,0 +1,103 @@
+{{template "header" .}}
+<form role = "form" id="test-form" method="post">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class = "panel panel-default">
+                    <div class = "panel-heading">
+                        Controls
+                    </div>
+
+                    <div class = "panel-body">
+                        <div class = "form-group">
+                            <label for = "URL">URL</label>
+                            <input type = "text" class = "form-control" id="test-url" placeholder = "URL">
+                        </div>
+                        <button type="button" id="test-pet-findbystatus" class="btn btn-primary">Find Pets By Status</button>
+                        <button type="button" id="test-pet" class="btn btn-primary">Create Pet</button>
+                        <button type="button" id="test-2" class="btn btn-primary">Unused 2</button>
+                    </div>
+                </div>		
+            </div>
+            <div class="col-lg-8">
+                <div class = "panel panel-default">
+                    <div class = "panel-heading">
+                        Request
+                    </div>
+                    <div class = "panel-body">
+                        <div class = "form-group">
+                            <textarea id="test-request" class = "form-control" rows = "10"></textarea>
+                        </div>
+                    </div>
+                </div>		
+                <div class = "panel panel-default">
+                    <div class = "panel-heading">
+                        Response
+                    </div>
+                    <div class = "panel-body">
+                        <div class = "form-group">
+                            <textarea id="test-response" class = "form-control" rows = "10"></textarea>
+                        </div>
+                    </div>
+                </div>		
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+
+        $('#test-pet-findbystatus').click(function ( ) {
+            $("#test-url").val( window.location.origin );
+            $.ajax(
+                    {
+                        url: $('#test-pet-findbystatus').val() + "pet/findByStatus",
+                        type: 'get',
+                        data: {status: "available,pending"},
+                        dataType: 'json',
+                        success: function (data)
+                        {
+                            var sRsp = JSON.stringify(data);
+                            console.log("pet-findbystatus Success " + sRsp);
+                            $('#test-response').val(sRsp);
+                        }, // end success()
+                        error: function (data)
+                        {
+                            console.log("pet-findbystatus Error ");
+                        }
+                    }); // end ajax			
+        });
+        
+        $('#test-pet').click(function ( ) {
+            // TODO - function incomplete
+            $('#test-request').val(files);
+            $.ajax(
+                    {
+                        url: $('#test-pet').val() + "/pet",
+                        type: 'post',
+                        data: "",
+                        dataType: 'none',
+                        success: function (data)
+                        {
+                            console.log("test-pet " + data);
+                            $('#test-response').val(data);
+                        }, // end success()
+                        error: function (data)
+                        {
+                            console.log("test-pet Error " + data);
+                            $('#test-response').val("test-pet Error " + data);
+                        }
+                    }); // end ajax			
+        });
+
+
+        $('#test-2').click(function ( ) {
+            $("#test-form").attr('action', 'unused');
+            $("#test-form").submit();
+        });
+    });
+</script>	
+{{template "footer"}}
+
+
+
